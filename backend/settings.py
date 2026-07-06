@@ -67,6 +67,7 @@ CORS_ALLOWED_ORIGINS = [
   "https://frontend-react-ig6co5pa4-dkjrhs-projects.vercel.app",
   "http://localhost:3000",
   "http://localhost:5173",
+  "https://emmanuelokanya.vercel.app",
 ]
 
 TEMPLATES = [
