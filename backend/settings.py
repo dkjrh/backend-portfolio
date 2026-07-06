@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-87_v#dq8^3^_5q9$z$f@#80*05#k+tw9q=9h7ji-ldcho0^pl_
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    'backend-portfolio-z4kv.onrender.com',
     '127.0.0.1',
     'localhost'
 ]
@@ -63,6 +64,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'backend.urls'
 
 CORS_ALLOWED_ORIGINS = [
+  "https://frontend-react-ig6co5pa4-dkjrhs-projects.vercel.app",
   "http://localhost:3000",
   "http://localhost:5173",
 ]
@@ -133,7 +135,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR/'staticfiles'
 os.environ['SSL_CERT_FILE'] = certifi.where()
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -141,3 +143,7 @@ EMAIL_HOST_USER = "okanyaemmanuel6@gmail.com"
 EMAIL_HOST_PASSWORD = "oyykfdqoyustktct"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_USE_SSL = False
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False") == "True"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
