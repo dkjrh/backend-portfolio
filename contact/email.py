@@ -7,7 +7,7 @@ resend.api_key = settings.RESEND_API_KEY
 def send_contact_email(name, email, message):
     response = resend.Emails.send(
         {
-            "from": "Portfolio <contact@yourdomain.com>",
+            "from":  "onboarding@resend.dev",
             "to": ["okanyaemmanuel6@gmail.com"],
             "subject": f"New Portfolio Message from {name}",
             "text": f"""
