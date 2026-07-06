@@ -8,9 +8,8 @@ def contact_view(request):
     email = request.data.get("email")
     message = request.data.get("message")
 
-    if not name or not email or not message:
-        return Response({"error": "All fields required"}, status=400)
-
-    send_contact_email(name, email, message)
-
-    return Response({"success": "Message sent successfully"})
+    try:
+        send_contact_email(name, email, message)
+        return Response({"success": True, "message": "Email sent successfully"})
+    except Exception as e:
+        return Response({"success": False, "error": str(e)}, status=500)
