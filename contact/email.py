@@ -1,23 +1,25 @@
-from django.core.mail import send_mail
+import resend
 from django.conf import settings
 
+resend.api_key = settings.RESEND_API_KEY
+
+
 def send_contact_email(name, email, message):
-    subject = f"New Contact Message from {name}"
-
-    body = f"""
-You received a new message:
-
+    response = resend.Emails.send(
+        {
+            "from": "Portfolio <contact@yourdomain.com>",
+            "to": ["okanyaemmanuel6@gmail.com"],
+            "subject": f"New Portfolio Message from {name}",
+            "text": f"""
 Name: {name}
 Email: {email}
 
 Message:
 {message}
-"""
-
-    send_mail(
-        subject,
-        body,
-        settings.EMAIL_HOST_USER,
-        [settings.EMAIL_HOST_USER],
-        fail_silently=False,
+""",
+        }
     )
+
+    print(response)
+
+    return response

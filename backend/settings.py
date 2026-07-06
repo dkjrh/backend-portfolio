@@ -45,8 +45,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'contact',
-    'corsheaders'
+    'corsheaders',
 ]
+
+REST_FRAMEWORK = {
+  "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ]
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -61,13 +70,12 @@ MIDDLEWARE = [
     
 ]
 
-ROOT_URLCONF = 'backend.urls'
 
+ROOT_URLCONF = 'backend.urls'
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-  "https://frontend-react-ig6co5pa4-dkjrhs-projects.vercel.app",
-  "http://localhost:3000",
-  "http://localhost:5173",
   "https://emmanuelokanya.vercel.app",
+  "http://localhost:5173",
 ]
 
 TEMPLATES = [
@@ -136,15 +144,37 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR/'staticfiles'
 os.environ['SSL_CERT_FILE'] = certifi.where()
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "okanyaemmanuel6@gmail.com"
-EMAIL_HOST_PASSWORD = "oyykfdqoyustktct"
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+CONTACT_EMAIL = "okanyaemmanuel6@gmail.com"
 EMAIL_USE_SSL = False
+# --- REPLACE THE BOTTOM OF YOUR SETTINGS.PY WITH THIS ---
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+# --- REPLACE THIS PORTION AT THE BOTTOM OF SETTINGS.PY ---
+
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-87_v#dq8^3^_5q9$z$f@#80*05#k+tw9q=9h7ji-ldcho0^pl_")
+
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+
+# Secure parsing block for production environment hosts
+env_hosts = os.getenv("ALLOWED_HOSTS")
+if env_hosts and env_hosts.strip():
+    ALLOWED_HOSTS = env_hosts.split(",")
+else:
+    ALLOWED_HOSTS = [
+        "backend-portfolio-z4kv.onrender.com",
+        "localhost",
+        "127.0.0.1",
+    ]
+
+# Tell Django to trust Render's load balancer secure headers
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Explicitly trust origins for form actions and token checks
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://backend-portfolio-z4kv.onrender.com",
+    "https://vercel.app",
+]
+
+# Pull the api token for Resend
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
